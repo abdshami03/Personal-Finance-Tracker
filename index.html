@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Personal Finance Tracker</title>
     <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   </head>
   <body>
     <div class="container">
@@ -15,6 +20,13 @@
           </div>
         </div>
         <h1>Personal Finance Tracker</h1>
+        <div class="theme-toggle">
+          <i class="fas fa-moon"></i>
+          <label class="switch">
+            <input type="checkbox" id="theme-toggle" />
+            <span class="slider round"></span>
+          </label>
+        </div>
       </header>
       <main>
         <section class="balance-section">
@@ -30,6 +42,35 @@
             <div class="expense-card">
               <h3>Expenses</h3>
               <p id="expense">$0.00</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="budget-section">
+          <h2>Budget Overview</h2>
+          <div class="budget-cards">
+            <div class="budget-card">
+              <h3>Monthly Budget</h3>
+              <p id="monthly-budget">$0.00</p>
+              <div class="budget-progress">
+                <div class="progress-bar" id="budget-progress-bar"></div>
+              </div>
+              <p id="budget-remaining">Remaining: $0.00</p>
+            </div>
+            <div class="budget-card">
+              <h3>Set Budget</h3>
+              <form id="budget-form">
+                <div class="form-group">
+                  <input
+                    type="number"
+                    id="budget-amount"
+                    placeholder="Enter budget amount..."
+                    step="0.01"
+                    required
+                  />
+                </div>
+                <button type="submit" class="btn">Set Budget</button>
+              </form>
             </div>
           </div>
         </section>
@@ -52,13 +93,63 @@
                 type="number"
                 id="amount"
                 placeholder="Enter amount..."
-                step="01.00"
+                step="0.01"
                 required
               />
               <small>Positive for income, negative for expense</small>
             </div>
+            <div class="form-group">
+              <label for="category">Category</label>
+              <select id="category" required>
+                <option value="">Select category</option>
+                <optgroup label="Income">
+                  <option value="salary">Salary</option>
+                  <option value="freelance">Freelance</option>
+                  <option value="investments">Investments</option>
+                  <option value="other-income">Other</option>
+                </optgroup>
+                <optgroup label="Expenses">
+                  <option value="housing">Housing</option>
+                  <option value="utilities">Utilities</option>
+                  <option value="food">Food</option>
+                  <option value="transportation">Transportation</option>
+                  <option value="entertainment">Entertainment</option>
+                  <option value="healthcare">Healthcare</option>
+                  <option value="shopping">Shopping</option>
+                  <option value="other-expense">Other</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="date">Date</label>
+              <input type="date" id="date" required />
+            </div>
             <button type="submit" class="btn">Add Transaction</button>
           </form>
+        </section>
+
+        <section class="reports-section">
+          <h2>Financial Reports</h2>
+          <div class="report-controls">
+            <div class="report-period">
+              <button class="report-btn active" data-period="week">Week</button>
+              <button class="report-btn" data-period="month">Month</button>
+              <button class="report-btn" data-period="year">Year</button>
+            </div>
+            <button id="export-btn" class="btn">
+              <i class="fas fa-download"></i> Export
+            </button>
+          </div>
+          <div class="charts-container">
+            <div class="chart-card">
+              <h3>Income vs Expenses</h3>
+              <canvas id="income-expense-chart"></canvas>
+            </div>
+            <div class="chart-card">
+              <h3>Expense Categories</h3>
+              <canvas id="category-chart"></canvas>
+            </div>
+          </div>
         </section>
 
         <section class="history-section">
@@ -68,6 +159,14 @@
               <button class="filter-btn active" data-filter="all">All</button>
               <button class="filter-btn" data-filter="income">Income</button>
               <button class="filter-btn" data-filter="expense">Expenses</button>
+            </div>
+            <div class="search-container">
+              <input
+                type="text"
+                id="search-transaction"
+                placeholder="Search transactions..."
+              />
+              <i class="fas fa-search"></i>
             </div>
           </div>
           <ul id="transaction-list"></ul>
